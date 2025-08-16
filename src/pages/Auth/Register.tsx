@@ -122,6 +122,8 @@ const Register: React.FC = () => {
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     setError('');
+    
+    console.log('Form submitted with:', { email, username, password: password ? '***' : 'empty' });
 
     if (password !== confirmPassword) {
       setError('Passwords do not match');
@@ -129,9 +131,12 @@ const Register: React.FC = () => {
     }
 
     try {
+      console.log('Calling register function...');
       await register(email, password, username);
+      console.log('Registration successful, navigating to profile...');
       navigate('/profile');
     } catch (err) {
+      console.error('Registration error in component:', err);
       setError('Registration error');
     }
   };

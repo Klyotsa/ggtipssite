@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react'
 import styled from 'styled-components'
 import videoPoster from '../assets/video-poster.jpg'
-import videoFile from '../assets/promo.mp4'
+// import videoFile from '../assets/promo.mp4'
 import WCU1Image from '../assets/images/WCU1.jpg'
 import WCU2Image from '../assets/images/WCU2.jpg'
 import WCU4Image from '../assets/images/WCU4.jpg'
@@ -299,7 +299,7 @@ const WhyChooseUs = () => {
             playsInline
             poster={videoPoster}
           >
-            <source src={videoFile} type="video/mp4" />
+            <source src="/assets/media/promo-DxXzbjpE.mp4" type="video/mp4" />
             Your browser does not support the video tag.
           </Video>
           <SoundIndicator isMuted={isMuted} isVisible={isIndicatorVisible}>

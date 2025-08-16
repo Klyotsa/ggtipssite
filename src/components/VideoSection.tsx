@@ -1,7 +1,7 @@
 import { useRef, useState, useEffect } from 'react';
 import { styled } from 'styled-components';
-import videoFile from '../assets/promo.mp4';
-import videoPoster from '../assets/images/video-poster.jpg';
+// import videoFile from '../assets/promo.mp4';
+// import videoPoster from '../assets/images/video-poster.jpg';
 
 const Title = styled.h2`
   font-size: 3.5rem;
@@ -182,9 +182,9 @@ const VideoSection = () => {
           loop
           muted={isMuted}
           playsInline
-          poster={videoPoster}
+          poster="/assets/images/video-poster-D8xaOUJb.jpg"
         >
-          <source src={videoFile} type="video/mp4" />
+          <source src="/assets/media/promo-DxXzbjpE.mp4" type="video/mp4" />
           Your browser does not support the video tag.
         </Video>
         {isMobile && !isPlaying && (

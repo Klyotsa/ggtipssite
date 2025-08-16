@@ -241,6 +241,11 @@ $users = $stmt->fetchAll();
             color: white;
         }
         
+        .btn-delete {
+            background: linear-gradient(45deg, #f44336, #d32f2f);
+            color: white;
+        }
+        
         .pagination {
             display: flex;
             justify-content: center;
@@ -281,6 +286,26 @@ $users = $stmt->fetchAll();
             color: #ffd700;
             margin-bottom: 10px;
         }
+        
+        .success-message {
+            background: rgba(76, 175, 80, 0.2);
+            color: #4CAF50;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(76, 175, 80, 0.3);
+        }
+        
+        .error-message {
+            background: rgba(244, 67, 54, 0.2);
+            color: #f44336;
+            padding: 15px;
+            border-radius: 10px;
+            margin-bottom: 20px;
+            text-align: center;
+            border: 1px solid rgba(244, 67, 54, 0.3);
+        }
     </style>
 </head>
 <body>
@@ -303,6 +328,32 @@ $users = $stmt->fetchAll();
                 <p>Страница</p>
             </div>
         </div>
+        
+        <?php if (isset($_GET['success']) && $_GET['success'] === 'user_deleted'): ?>
+            <div class="success-message">
+                ✅ Пользователь успешно удален
+            </div>
+        <?php endif; ?>
+        
+        <?php if (isset($_GET['error'])): ?>
+            <div class="error-message">
+                <?php 
+                switch ($_GET['error']) {
+                    case 'invalid_id':
+                        echo '❌ Неверный ID пользователя';
+                        break;
+                    case 'cannot_delete_admin':
+                        echo '❌ Нельзя удалить администратора';
+                        break;
+                    case 'deletion_failed':
+                        echo '❌ Ошибка при удалении пользователя';
+                        break;
+                    default:
+                        echo '❌ Произошла ошибка';
+                }
+                ?>
+            </div>
+        <?php endif; ?>
         
         <div class="search-box">
             <form class="search-form" method="GET">
@@ -370,6 +421,11 @@ $users = $stmt->fetchAll();
                     <div class="actions">
                         <a href="admin_user_view.php?id=<?php echo $user['id']; ?>" class="action-btn btn-view">👁️</a>
                         <a href="admin_user_edit.php?id=<?php echo $user['id']; ?>" class="action-btn btn-edit">✏️</a>
+                        <?php if ($user['id'] !== 1): // Не показываем кнопку удаления для админа ?>
+                            <a href="admin_delete_user.php?id=<?php echo $user['id']; ?>" 
+                               class="action-btn btn-delete" 
+                               onclick="return confirm('Вы уверены, что хотите удалить пользователя <?php echo htmlspecialchars($user['username']); ?>? Это действие нельзя отменить.')">🗑️</a>
+                        <?php endif; ?>
                     </div>
                 </div>
             <?php endforeach; ?>

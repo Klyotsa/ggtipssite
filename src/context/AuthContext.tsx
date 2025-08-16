@@ -72,6 +72,8 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
 
   const register = async (email: string, password: string, username: string) => {
     try {
+      console.log('Starting registration for:', { email, username });
+      
       const response = await fetch(`${API_BASE_URL}/register.php`, {
         method: 'POST',
         headers: {
@@ -79,10 +81,15 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         },
         body: JSON.stringify({ email, username, password }),
       });
+      
+      console.log('Registration response status:', response.status);
       const data = await response.json();
+      console.log('Registration response data:', data);
+      
       if (!response.ok) {
         throw new Error(data.error || 'Registration failed');
       }
+      
       // После успешной регистрации можно сразу залогинить пользователя (или получить его данные)
       const newUser = {
         id: data.user_id?.toString() || '',
@@ -90,9 +97,13 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({ children
         username,
         avatar: null,
       };
+      
+      console.log('Setting new user:', newUser);
       setUser(newUser);
       setIsAuthenticated(true);
       localStorage.setItem('user', JSON.stringify(newUser));
+      
+      console.log('Registration completed successfully');
     } catch (error: any) {
       console.error('Registration failed:', error);
       throw error;
