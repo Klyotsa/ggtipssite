@@ -2,6 +2,21 @@
 session_start();
 require_once 'backend/config.php';
 
+// Проверка авторизации
+if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
+    header('Location: admin_login.php');
+    exit;
+}
+
+// Проверка IP адреса
+$allowed_ips = ['157.230.244.205', '127.0.0.1', '::1'];
+$client_ip = $_SERVER['REMOTE_ADDR'] ?? '';
+if (!in_array($client_ip, $allowed_ips)) {
+    session_destroy();
+    header('Location: admin_login.php');
+    exit;
+}
+
 $pdo = getDBConnection();
 if (!$pdo) {
     die('Ошибка подключения к базе данных');
