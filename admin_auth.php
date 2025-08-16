@@ -86,7 +86,7 @@ function renderAdminHeader() {
     </div>
     <script>
         // Работающий таймер сессии (начинаем с 1 секунды)
-        const startTime = ' . ($admin_info['login_time'] + 1) . '; // +1 секунда
+        const startTime = Math.floor(Date.now() / 1000) + 1; // +1 секунда
         
         function updateSessionTimer() {
             const now = Math.floor(Date.now() / 1000);
