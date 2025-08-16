@@ -74,26 +74,24 @@ function renderAdminHeader() {
     if (!$admin_info) return '';
     
     $login_time = date('d.m.Y H:i', $admin_info['login_time']);
-    $ip_address = $admin_info['ip_address'];
+    $current_ip = getClientIP();
     
     return '
     <div class="admin-info">
         <span>👤 Админ: ' . htmlspecialchars($admin_info['username']) . '</span>
-        <span>🌐 IP: ' . htmlspecialchars($ip_address) . '</span>
+        <span id="current-ip">🌐 IP: ' . htmlspecialchars($current_ip) . '</span>
         <span>🕐 Вход: ' . $login_time . '</span>
-        <span id="session-timer">⏱️ Сессия: 00:00:00</span>
+        <span id="session-timer">⏱️ Сессия: 00:00:01</span>
         <a href="admin_logout.php" class="logout-btn">🚪 Выйти</a>
     </div>
     <script>
-        // Работающий таймер сессии
+        // Работающий таймер сессии (начинаем с 1 секунды)
+        let sessionSeconds = 1;
+        
         function updateSessionTimer() {
-            const startTime = ' . $admin_info['login_time'] . ' * 1000;
-            const now = Date.now();
-            const duration = Math.floor((now - startTime) / 1000);
-            
-            const hours = Math.floor(duration / 3600);
-            const minutes = Math.floor((duration % 3600) / 60);
-            const seconds = duration % 60;
+            const hours = Math.floor(sessionSeconds / 3600);
+            const minutes = Math.floor((sessionSeconds % 3600) / 60);
+            const seconds = sessionSeconds % 60;
             
             const timeString = 
                 (hours < 10 ? "0" : "") + hours + ":" +
@@ -101,11 +99,31 @@ function renderAdminHeader() {
                 (seconds < 10 ? "0" : "") + seconds;
             
             document.getElementById("session-timer").innerHTML = "⏱️ Сессия: " + timeString;
+            sessionSeconds++;
         }
         
         // Обновляем таймер каждую секунду
         setInterval(updateSessionTimer, 1000);
         updateSessionTimer(); // Запускаем сразу
+        
+        // Функция для обновления IP-адреса
+        function updateIPAddress() {
+            fetch(window.location.href)
+                .then(response => response.text())
+                .then(html => {
+                    // Создаем временный элемент для парсинга HTML
+                    const parser = new DOMParser();
+                    const doc = parser.parseFromString(html, "text/html");
+                    const ipElement = doc.getElementById("current-ip");
+                    if (ipElement) {
+                        document.getElementById("current-ip").innerHTML = ipElement.innerHTML;
+                    }
+                })
+                .catch(error => console.log("IP update error:", error));
+        }
+        
+        // Обновляем IP-адрес каждые 30 секунд
+        setInterval(updateIPAddress, 30000);
     </script>';
 }
 
