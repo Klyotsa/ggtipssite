@@ -1,14 +1,17 @@
 <?php
 session_start();
+require_once 'backend/config.php';
 
 // Логируем выход
-if (isset($_SESSION['admin_username'])) {
-    $username = $_SESSION['admin_username'];
-    $ip = $_SESSION['admin_ip'] ?? 'unknown';
-    error_log("Admin logout: Username: $username, IP: $ip");
+if (isset($_SESSION['admin_logged_in']) && $_SESSION['admin_logged_in'] === true) {
+    logActivity(1, 'admin_logout', 'Выход из админки', [
+        'ip' => $_SERVER['REMOTE_ADDR'] ?? '',
+        'username' => $_SESSION['admin_username'] ?? ''
+    ]);
 }
 
-// Уничтожаем сессию
+// Очищаем сессию
+session_unset();
 session_destroy();
 
 // Перенаправляем на страницу входа
