@@ -45,10 +45,27 @@ function getAdminInfo() {
         return [
             'username' => $_SESSION['admin_username'],
             'login_time' => $_SESSION['admin_login_time'] ?? 0,
-            'session_duration' => time() - ($_SESSION['admin_login_time'] ?? time())
+            'session_duration' => time() - ($_SESSION['admin_login_time'] ?? time()),
+            'ip_address' => $_SESSION['admin_ip'] ?? 'unknown'
         ];
     }
     return null;
+}
+
+// Функция для получения IP-адреса
+function getClientIP() {
+    $ip_keys = ['HTTP_CLIENT_IP', 'HTTP_X_FORWARDED_FOR', 'HTTP_X_FORWARDED', 'HTTP_X_CLUSTER_CLIENT_IP', 'HTTP_FORWARDED_FOR', 'HTTP_FORWARDED', 'REMOTE_ADDR'];
+    foreach ($ip_keys as $key) {
+        if (array_key_exists($key, $_SERVER) === true) {
+            foreach (explode(',', $_SERVER[$key]) as $ip) {
+                $ip = trim($ip);
+                if (filter_var($ip, FILTER_VALIDATE_IP, FILTER_FLAG_NO_PRIV_RANGE | FILTER_FLAG_NO_RES_RANGE) !== false) {
+                    return $ip;
+                }
+            }
+        }
+    }
+    return $_SERVER['REMOTE_ADDR'] ?? 'unknown';
 }
 
 // Функция для отображения информации об администраторе в шапке
@@ -57,15 +74,39 @@ function renderAdminHeader() {
     if (!$admin_info) return '';
     
     $login_time = date('d.m.Y H:i', $admin_info['login_time']);
-    $duration = gmdate('H:i:s', $admin_info['session_duration']);
+    $ip_address = $admin_info['ip_address'];
     
     return '
     <div class="admin-info">
         <span>👤 Админ: ' . htmlspecialchars($admin_info['username']) . '</span>
+        <span>🌐 IP: ' . htmlspecialchars($ip_address) . '</span>
         <span>🕐 Вход: ' . $login_time . '</span>
-        <span>⏱️ Сессия: ' . $duration . '</span>
+        <span id="session-timer">⏱️ Сессия: 00:00:00</span>
         <a href="admin_logout.php" class="logout-btn">🚪 Выйти</a>
-    </div>';
+    </div>
+    <script>
+        // Работающий таймер сессии
+        function updateSessionTimer() {
+            const startTime = ' . $admin_info['login_time'] . ' * 1000;
+            const now = Date.now();
+            const duration = Math.floor((now - startTime) / 1000);
+            
+            const hours = Math.floor(duration / 3600);
+            const minutes = Math.floor((duration % 3600) / 60);
+            const seconds = duration % 60;
+            
+            const timeString = 
+                (hours < 10 ? "0" : "") + hours + ":" +
+                (minutes < 10 ? "0" : "") + minutes + ":" +
+                (seconds < 10 ? "0" : "") + seconds;
+            
+            document.getElementById("session-timer").innerHTML = "⏱️ Сессия: " + timeString;
+        }
+        
+        // Обновляем таймер каждую секунду
+        setInterval(updateSessionTimer, 1000);
+        updateSessionTimer(); // Запускаем сразу
+    </script>';
 }
 
 // Функция для добавления CSS стилей админки

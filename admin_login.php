@@ -19,6 +19,7 @@ if ($_POST) {
         $_SESSION['admin_logged_in'] = true;
         $_SESSION['admin_username'] = $username;
         $_SESSION['admin_login_time'] = time();
+        $_SESSION['admin_ip'] = $_SERVER['REMOTE_ADDR'] ?? 'unknown';
         
         // Логируем успешный вход
         error_log("Admin login successful: $username from " . ($_SERVER['REMOTE_ADDR'] ?? 'unknown'));
