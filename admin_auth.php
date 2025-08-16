@@ -86,12 +86,15 @@ function renderAdminHeader() {
     </div>
     <script>
         // Работающий таймер сессии (начинаем с 1 секунды)
-        let sessionSeconds = 1;
+        const startTime = ' . ($admin_info['login_time'] + 1) . '; // +1 секунда
         
         function updateSessionTimer() {
-            const hours = Math.floor(sessionSeconds / 3600);
-            const minutes = Math.floor((sessionSeconds % 3600) / 60);
-            const seconds = sessionSeconds % 60;
+            const now = Math.floor(Date.now() / 1000);
+            const duration = Math.max(1, now - startTime);
+            
+            const hours = Math.floor(duration / 3600);
+            const minutes = Math.floor((duration % 3600) / 60);
+            const seconds = duration % 60;
             
             const timeString = 
                 (hours < 10 ? "0" : "") + hours + ":" +
@@ -99,7 +102,6 @@ function renderAdminHeader() {
                 (seconds < 10 ? "0" : "") + seconds;
             
             document.getElementById("session-timer").innerHTML = "⏱️ Сессия: " + timeString;
-            sessionSeconds++;
         }
         
         // Обновляем таймер каждую секунду
@@ -108,22 +110,26 @@ function renderAdminHeader() {
         
         // Функция для обновления IP-адреса
         function updateIPAddress() {
-            fetch(window.location.href)
-                .then(response => response.text())
-                .then(html => {
-                    // Создаем временный элемент для парсинга HTML
-                    const parser = new DOMParser();
-                    const doc = parser.parseFromString(html, "text/html");
-                    const ipElement = doc.getElementById("current-ip");
-                    if (ipElement) {
-                        document.getElementById("current-ip").innerHTML = ipElement.innerHTML;
+            // Создаем AJAX запрос для получения текущего IP
+            const xhr = new XMLHttpRequest();
+            xhr.open("GET", "get_current_ip.php", true);
+            xhr.onreadystatechange = function() {
+                if (xhr.readyState === 4 && xhr.status === 200) {
+                    try {
+                        const response = JSON.parse(xhr.responseText);
+                        if (response.ip) {
+                            document.getElementById("current-ip").innerHTML = "🌐 IP: " + response.ip;
+                        }
+                    } catch (e) {
+                        console.log("IP update error:", e);
                     }
-                })
-                .catch(error => console.log("IP update error:", error));
+                }
+            };
+            xhr.send();
         }
         
-        // Обновляем IP-адрес каждые 30 секунд
-        setInterval(updateIPAddress, 30000);
+        // Обновляем IP-адрес каждые 10 секунд
+        setInterval(updateIPAddress, 10000);
     </script>';
 }
 
