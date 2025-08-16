@@ -1,0 +1,346 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#1a0f2e" />
+    <link rel="icon" type="image/svg+xml" href="/favicon.ico" />
+    <link rel="icon" type="image/png" href="/logo_brand.png" />
+    <!-- Trustpilot Domain Verification -->
+    <meta name="trustpilot-one-time-domain-verification-id" content="c364ffa6-ec9b-4c3f-b326-272750ae1693"/>
+    
+    <!-- Google tag (gtag.js) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-4J6E8K4883"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+
+      gtag('config', 'G-4J6E8K4883', {
+        'cookie_flags': 'SameSite=None;Secure',
+        'anonymize_ip': true
+      });
+    </script>
+    
+    <!-- Cookie Consent Setup -->
+    <script>
+      // Cookie translations for all supported languages
+      const cookieTranslations = {
+        english: {
+          message: 'We use cookies to improve your experience. By clicking "Accept", you agree to the use of cookies.',
+          accept: 'Accept',
+          reject: 'Decline'
+        },
+        español: {
+          message: 'Utilizamos cookies para mejorar su experiencia. Al hacer clic en "Aceptar", acepta el uso de cookies.',
+          accept: 'Aceptar',
+          reject: 'Rechazar'
+        },
+        français: {
+          message: 'Nous utilisons des cookies pour améliorer votre expérience. En cliquant sur "Accepter", vous acceptez l\'utilisation de cookies.',
+          accept: 'Accepter',
+          reject: 'Refuser'
+        },
+        deutsch: {
+          message: 'Wir verwenden Cookies, um Ihr Erlebnis zu verbessern. Durch Klicken auf "Akzeptieren" stimmen Sie der Verwendung von Cookies zu.',
+          accept: 'Akzeptieren',
+          reject: 'Ablehnen'
+        },
+        italiano: {
+          message: 'Utilizziamo i cookie per migliorare la tua esperienza. Facendo clic su "Accetta", accetti l\'utilizzo dei cookie.',
+          accept: 'Accetta',
+          reject: 'Rifiuta'
+        },
+        '中文': {
+          message: '我们使用cookie来改善您的体验。点击"接受"，即表示您同意使用cookie。',
+          accept: '接受',
+          reject: '拒绝'
+        },
+        '日本語': {
+          message: 'Cookieを使用して、あなたの体験を向上させています。「同意する」をクリックすると、Cookieの使用に同意したことになります。',
+          accept: '同意する',
+          reject: '拒否する'
+        },
+        'português': {
+          message: 'Utilizamos cookies para melhorar sua experiência. Ao clicar em "Aceitar", você concorda com o uso de cookies.',
+          accept: 'Aceitar',
+          reject: 'Recusar'
+        },
+        'العربية': {
+          message: 'نستخدم ملفات تعريف الارتباط لتحسين تجربتك. بالنقر على "قبول"، فإنك توافق على استخدام ملفات تعريف الارتباط.',
+          accept: 'قبول',
+          reject: 'رفض'
+        },
+        'hindi': {
+          message: 'हम आपके अनुभव को बेहतर बनाने के लिए कुकीज़ का उपयोग करते हैं। "स्वीकार करें" पर क्लिक करके, आप कुकीज़ के उपयोग से सहमत होते हैं।',
+          accept: 'स्वीकार करें',
+          reject: 'अस्वीकार करें'
+        }
+      };
+
+      // Initialize current language from localStorage if available
+      let currentLanguage = localStorage.getItem('language') || 'english';
+      console.log('Initial cookie language:', currentLanguage);
+
+      // Function to check if user has already given consent
+      function getCookieConsent() {
+        return localStorage.getItem('cookieConsent') === 'true';
+      }
+      
+      // Function to set consent
+      function setCookieConsent(consent) {
+        localStorage.setItem('cookieConsent', consent);
+        if (consent) {
+          gtag('consent', 'update', {
+            'analytics_storage': 'granted'
+          });
+        } else {
+          gtag('consent', 'update', {
+            'analytics_storage': 'denied'
+          });
+        }
+      }
+      
+      // Set default to denied until user gives consent
+      gtag('consent', 'default', {
+        'analytics_storage': 'denied'
+      });
+      
+      // Check if user has already given consent
+      if (getCookieConsent()) {
+        setCookieConsent(true);
+      }
+      
+      // Try to get language from localStorage (site will set this)
+      function getCurrentLanguage() {
+        const savedLanguage = localStorage.getItem('language');
+        currentLanguage = savedLanguage || currentLanguage; // Update our cached value
+        return currentLanguage;
+      }
+      
+      // Get translations for current language
+      function getCookieText(key) {
+        const lang = getCurrentLanguage().toLowerCase();
+        // Look up translation for the current language, fallback to english if not found
+        return (cookieTranslations[lang] && cookieTranslations[lang][key]) || cookieTranslations.english[key];
+      }
+      
+      // Update banner text based on language
+      function updateBannerText() {
+        const banner = document.getElementById('cookie-banner');
+        if (banner) {
+          const messageElem = banner.querySelector('#cookie-message');
+          const acceptBtn = banner.querySelector('#accept-cookies');
+          const rejectBtn = banner.querySelector('#reject-cookies');
+          
+          if (messageElem) messageElem.textContent = getCookieText('message');
+          if (acceptBtn) acceptBtn.textContent = getCookieText('accept');
+          if (rejectBtn) rejectBtn.textContent = getCookieText('reject');
+        }
+      }
+      
+      // Listen for language changes in localStorage
+      window.addEventListener('storage', function(e) {
+        if (e.key === 'language') {
+          console.log('Language storage changed to:', e.newValue);
+          currentLanguage = e.newValue || currentLanguage;
+          updateBannerText();
+        }
+      });
+      
+      // Listen for the custom event from our React app
+      window.addEventListener('languageChanged', function(e) {
+        if (e.detail && e.detail.language) {
+          currentLanguage = e.detail.language;
+        }
+        console.log('Language changed event:', currentLanguage);
+        updateBannerText();
+      });
+      
+      // Display cookie banner if needed
+      window.addEventListener('DOMContentLoaded', function() {
+        if (!getCookieConsent()) {
+          setTimeout(function() {
+            showCookieBanner();
+          }, 1000);
+        }
+      });
+      
+      function showCookieBanner() {
+        // Create CSS for the banner
+        const style = document.createElement('style');
+        style.innerHTML = `
+          #cookie-banner {
+            position: fixed;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background-color: rgba(26, 15, 46, 0.95);
+            color: white;
+            padding: 15px 20px;
+            z-index: 9999;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            font-family: Arial, sans-serif;
+            box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.3);
+            border-top: 1px solid rgba(255, 255, 255, 0.1);
+          }
+          #cookie-message {
+            margin: 0;
+            font-size: 14px;
+            line-height: 1.5;
+            flex: 1;
+          }
+          .cookie-buttons {
+            display: flex;
+            gap: 10px;
+            margin-left: 20px;
+          }
+          #accept-cookies {
+            background-color: #4e7ef8;
+            color: white;
+            border: none;
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-weight: 500;
+            transition: background-color 0.2s;
+          }
+          #accept-cookies:hover {
+            background-color: #3567e0;
+          }
+          #reject-cookies {
+            background-color: transparent;
+            color: white;
+            border: 1px solid rgba(255, 255, 255, 0.5);
+            padding: 8px 20px;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: border-color 0.2s;
+          }
+          #reject-cookies:hover {
+            border-color: rgba(255, 255, 255, 0.8);
+          }
+        `;
+        document.head.appendChild(style);
+        
+        // Create the banner
+        const banner = document.createElement('div');
+        banner.id = 'cookie-banner';
+        
+        // Get current language translations
+        const message = getCookieText('message');
+        const acceptText = getCookieText('accept');
+        const rejectText = getCookieText('reject');
+        
+        banner.innerHTML = `
+          <p id="cookie-message">${message}</p>
+          <div class="cookie-buttons">
+            <button id="accept-cookies">${acceptText}</button>
+            <button id="reject-cookies">${rejectText}</button>
+          </div>
+        `;
+        
+        document.body.appendChild(banner);
+        
+        document.getElementById('accept-cookies').addEventListener('click', function() {
+          setCookieConsent(true);
+          document.getElementById('cookie-banner').style.display = 'none';
+        });
+        
+        document.getElementById('reject-cookies').addEventListener('click', function() {
+          setCookieConsent(false);
+          document.getElementById('cookie-banner').style.display = 'none';
+        });
+      }
+    </script>
+    
+    <title>GGTips - Professional Gaming Tips</title>
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        width: 100%;
+        height: 100%;
+        background-color: #1a0f2e;
+      }
+      #root {
+        height: 100%;
+      }
+    </style>
+    
+    <!-- Primary Meta Tags -->
+    <meta name="title" content="Gang Game Tips - Professional Game Boosting Services | Secure & Fast">
+    <meta name="description" content="Professional game boosting services with 24/7 support. Secure account handling, fast delivery, and expert players. Top-rated boosting service with real-time tracking and VPN protection. Boost your gaming experience today!">
+    <meta name="keywords" content="game boosting, professional boosters, secure boosting, fast boosting service, gaming rank up, competitive gaming boost, 24/7 gaming support, pro gamers, game rank boost, secure gaming service, gaming account boost, professional gaming service">
+    
+    <!-- Open Graph / Facebook -->
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://ganggametips.com/">
+    <meta property="og:title" content="Gang Game Tips - Professional Game Boosting Services | Secure & Fast">
+    <meta property="og:description" content="Professional game boosting services with 24/7 support. Secure account handling, fast delivery, and expert players. Get your gaming boost from verified professionals!">
+    <meta property="og:image" content="/logo_brand.png">
+
+    <!-- Twitter -->
+    <meta property="twitter:card" content="summary_large_image">
+    <meta property="twitter:url" content="https://ganggametips.com/">
+    <meta property="twitter:title" content="Gang Game Tips - Professional Game Boosting Services">
+    <meta property="twitter:description" content="Professional game boosting services with 24/7 support. Secure account handling, fast delivery, and expert players.">
+    <meta property="twitter:image" content="/logo_brand.png">
+
+    <!-- Additional SEO -->
+    <meta name="robots" content="index, follow">
+    <meta name="language" content="English">
+    <meta name="revisit-after" content="7 days">
+    <meta name="author" content="Gang Game Tips">
+
+    <!-- Structured Data -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "ProfessionalService",
+      "name": "Gang Game Tips",
+      "description": "Professional game boosting services with secure account handling and fast delivery by expert players.",
+      "image": "/logo_brand.png",
+      "url": "https://ganggametips.com",
+      "telephone": "+1-XXX-XXX-XXXX",
+      "address": {
+        "@type": "PostalAddress",
+        "addressCountry": "United States"
+      },
+      "geo": {
+        "@type": "GeoCoordinates",
+        "latitude": "XX.XXXX",
+        "longitude": "XX.XXXX"
+      },
+      "openingHoursSpecification": {
+        "@type": "OpeningHoursSpecification",
+        "dayOfWeek": [
+          "Monday",
+          "Tuesday",
+          "Wednesday",
+          "Thursday",
+          "Friday",
+          "Saturday",
+          "Sunday"
+        ],
+        "opens": "00:00",
+        "closes": "23:59"
+      },
+      "sameAs": [
+        "https://twitter.com/ganggametips",
+        "https://facebook.com/ganggametips",
+        "https://instagram.com/ganggametips"
+      ]
+    }
+    </script>
+
+    <link rel="apple-touch-icon" href="/logo_brand.png" />
+    <link rel="canonical" href="https://ganggametips.com/" />
+  </head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  </body>
+</html> 

@@ -1,0 +1,16 @@
+# backend/.htaccess
+<IfModule mod_headers.c>
+  Header set Access-Control-Allow-Origin "*"
+  Header set Access-Control-Allow-Methods "GET, POST, OPTIONS"
+  Header set Access-Control-Allow-Headers "Content-Type, Authorization, X-Requested-With"
+</IfModule>
+
+# Отключить листинг директорий
+Options -Indexes
+
+# Разрешить доступ к файлам аватаров
+<Directory "avatars">
+  Options +Indexes
+  Allow from all
+  Require all granted
+</Directory> 

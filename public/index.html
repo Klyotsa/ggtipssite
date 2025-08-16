@@ -1,0 +1,275 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="GGTips - профессиональный бустинг в играх" />
+    <link rel="icon" type="image/png" href="/icons/favicon-32x32.png">
+    <link rel="apple-touch-icon" sizes="180x180" href="/icons/apple-touch-icon.png">
+    <link rel="icon" type="image/png" href="/icons/favicon-32x32.png">
+    <link rel="icon" type="image/png" href="/icons/favicon-32x32.png">
+    <link rel="manifest" href="/site.webmanifest" />
+    <meta name="theme-color" content="#1a0f2e" />
+    <title>GGTips - Профессиональный бустинг в играх</title>
+  
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/optimized/logo_brand.png" as="image">
+    <link rel="preload" href="/optimized/imagebghead.webp" as="image">
+  
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/optimized/logo_brand.png" as="image">
+    <link rel="preload" href="/optimized/imagebghead.webp" as="image">
+  
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/optimized/logo_brand.png" as="image">
+    <link rel="preload" href="/optimized/imagebghead.webp" as="image">
+  
+
+    <!-- Preload critical assets -->
+    <link rel="preload" href="/optimized/logo_brand.png" as="image">
+    <link rel="preload" href="/optimized/imagebghead.webp" as="image">
+  
+</head>
+  <body>
+    <div id="root"></div>
+    <script type="module" src="/src/main.tsx"></script>
+  
+    <script>
+      // Ленивая загрузка изображений
+      document.addEventListener("DOMContentLoaded", function() {
+        var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+        
+        if ("IntersectionObserver" in window) {
+          let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                let lazyImage = entry.target;
+                lazyImage.src = lazyImage.dataset.src;
+                if (lazyImage.dataset.srcset) {
+                  lazyImage.srcset = lazyImage.dataset.srcset;
+                }
+                lazyImage.classList.remove("lazy");
+                lazyImageObserver.unobserve(lazyImage);
+              }
+            });
+          });
+          
+          lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+          });
+        } else {
+          // Fallback для браузеров без IntersectionObserver
+          let lazyImageTimeout;
+          
+          function lazyLoad() {
+            if (lazyImageTimeout) {
+              clearTimeout(lazyImageTimeout);
+            }
+            
+            lazyImageTimeout = setTimeout(function() {
+              let scrollTop = window.pageYOffset;
+              lazyImages.forEach(function(lazyImage) {
+                if (lazyImage.offsetTop < (window.innerHeight + scrollTop)) {
+                  lazyImage.src = lazyImage.dataset.src;
+                  if (lazyImage.dataset.srcset) {
+                    lazyImage.srcset = lazyImage.dataset.srcset;
+                  }
+                  lazyImage.classList.remove("lazy");
+                }
+              });
+              if (lazyImages.length == 0) {
+                document.removeEventListener("scroll", lazyLoad);
+                window.removeEventListener("resize", lazyLoad);
+                window.removeEventListener("orientationChange", lazyLoad);
+              }
+            }, 20);
+          }
+          
+          document.addEventListener("scroll", lazyLoad);
+          window.addEventListener("resize", lazyLoad);
+          window.addEventListener("orientationChange", lazyLoad);
+        }
+      });
+    </script>
+  
+
+    <script>
+      // Ленивая загрузка изображений
+      document.addEventListener("DOMContentLoaded", function() {
+        var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+        
+        if ("IntersectionObserver" in window) {
+          let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                let lazyImage = entry.target;
+                lazyImage.src = lazyImage.dataset.src;
+                if (lazyImage.dataset.srcset) {
+                  lazyImage.srcset = lazyImage.dataset.srcset;
+                }
+                lazyImage.classList.remove("lazy");
+                lazyImageObserver.unobserve(lazyImage);
+              }
+            });
+          });
+          
+          lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+          });
+        } else {
+          // Fallback для браузеров без IntersectionObserver
+          let lazyImageTimeout;
+          
+          function lazyLoad() {
+            if (lazyImageTimeout) {
+              clearTimeout(lazyImageTimeout);
+            }
+            
+            lazyImageTimeout = setTimeout(function() {
+              let scrollTop = window.pageYOffset;
+              lazyImages.forEach(function(lazyImage) {
+                if (lazyImage.offsetTop < (window.innerHeight + scrollTop)) {
+                  lazyImage.src = lazyImage.dataset.src;
+                  if (lazyImage.dataset.srcset) {
+                    lazyImage.srcset = lazyImage.dataset.srcset;
+                  }
+                  lazyImage.classList.remove("lazy");
+                }
+              });
+              if (lazyImages.length == 0) {
+                document.removeEventListener("scroll", lazyLoad);
+                window.removeEventListener("resize", lazyLoad);
+                window.removeEventListener("orientationChange", lazyLoad);
+              }
+            }, 20);
+          }
+          
+          document.addEventListener("scroll", lazyLoad);
+          window.addEventListener("resize", lazyLoad);
+          window.addEventListener("orientationChange", lazyLoad);
+        }
+      });
+    </script>
+  
+
+    <script>
+      // Ленивая загрузка изображений
+      document.addEventListener("DOMContentLoaded", function() {
+        var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+        
+        if ("IntersectionObserver" in window) {
+          let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                let lazyImage = entry.target;
+                lazyImage.src = lazyImage.dataset.src;
+                if (lazyImage.dataset.srcset) {
+                  lazyImage.srcset = lazyImage.dataset.srcset;
+                }
+                lazyImage.classList.remove("lazy");
+                lazyImageObserver.unobserve(lazyImage);
+              }
+            });
+          });
+          
+          lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+          });
+        } else {
+          // Fallback для браузеров без IntersectionObserver
+          let lazyImageTimeout;
+          
+          function lazyLoad() {
+            if (lazyImageTimeout) {
+              clearTimeout(lazyImageTimeout);
+            }
+            
+            lazyImageTimeout = setTimeout(function() {
+              let scrollTop = window.pageYOffset;
+              lazyImages.forEach(function(lazyImage) {
+                if (lazyImage.offsetTop < (window.innerHeight + scrollTop)) {
+                  lazyImage.src = lazyImage.dataset.src;
+                  if (lazyImage.dataset.srcset) {
+                    lazyImage.srcset = lazyImage.dataset.srcset;
+                  }
+                  lazyImage.classList.remove("lazy");
+                }
+              });
+              if (lazyImages.length == 0) {
+                document.removeEventListener("scroll", lazyLoad);
+                window.removeEventListener("resize", lazyLoad);
+                window.removeEventListener("orientationChange", lazyLoad);
+              }
+            }, 20);
+          }
+          
+          document.addEventListener("scroll", lazyLoad);
+          window.addEventListener("resize", lazyLoad);
+          window.addEventListener("orientationChange", lazyLoad);
+        }
+      });
+    </script>
+  
+
+    <script>
+      // Ленивая загрузка изображений
+      document.addEventListener("DOMContentLoaded", function() {
+        var lazyImages = [].slice.call(document.querySelectorAll("img.lazy"));
+        
+        if ("IntersectionObserver" in window) {
+          let lazyImageObserver = new IntersectionObserver(function(entries, observer) {
+            entries.forEach(function(entry) {
+              if (entry.isIntersecting) {
+                let lazyImage = entry.target;
+                lazyImage.src = lazyImage.dataset.src;
+                if (lazyImage.dataset.srcset) {
+                  lazyImage.srcset = lazyImage.dataset.srcset;
+                }
+                lazyImage.classList.remove("lazy");
+                lazyImageObserver.unobserve(lazyImage);
+              }
+            });
+          });
+          
+          lazyImages.forEach(function(lazyImage) {
+            lazyImageObserver.observe(lazyImage);
+          });
+        } else {
+          // Fallback для браузеров без IntersectionObserver
+          let lazyImageTimeout;
+          
+          function lazyLoad() {
+            if (lazyImageTimeout) {
+              clearTimeout(lazyImageTimeout);
+            }
+            
+            lazyImageTimeout = setTimeout(function() {
+              let scrollTop = window.pageYOffset;
+              lazyImages.forEach(function(lazyImage) {
+                if (lazyImage.offsetTop < (window.innerHeight + scrollTop)) {
+                  lazyImage.src = lazyImage.dataset.src;
+                  if (lazyImage.dataset.srcset) {
+                    lazyImage.srcset = lazyImage.dataset.srcset;
+                  }
+                  lazyImage.classList.remove("lazy");
+                }
+              });
+              if (lazyImages.length == 0) {
+                document.removeEventListener("scroll", lazyLoad);
+                window.removeEventListener("resize", lazyLoad);
+                window.removeEventListener("orientationChange", lazyLoad);
+              }
+            }, 20);
+          }
+          
+          document.addEventListener("scroll", lazyLoad);
+          window.addEventListener("resize", lazyLoad);
+          window.addEventListener("orientationChange", lazyLoad);
+        }
+      });
+    </script>
+  
+</body>
+</html> 
