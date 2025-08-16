@@ -9,6 +9,14 @@ dist/
 build/
 *.zip
 
+# Large media files
+*.mp4
+*.avi
+*.mov
+*.wmv
+*.flv
+*.webm
+
 # Environment variables
 .env
 .env.local
