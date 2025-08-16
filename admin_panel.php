@@ -1,21 +1,9 @@
 <?php
-session_start();
+require_once 'admin_auth.php';
 require_once 'backend/config.php';
 
-// Проверка авторизации
-if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
-    header('Location: admin_login.php');
-    exit;
-}
-
-// Проверка IP адреса
-$allowed_ips = ['157.230.244.205', '127.0.0.1', '::1'];
-$client_ip = $_SERVER['REMOTE_ADDR'] ?? '';
-if (!in_array($client_ip, $allowed_ips)) {
-    session_destroy();
-    header('Location: admin_login.php');
-    exit;
-}
+// Проверяем авторизацию администратора
+checkAdminAuth();
 
 $pdo = getDBConnection();
 if (!$pdo) {
@@ -204,16 +192,12 @@ try {
 </head>
 <body>
     <div class="container">
+        <?php echo renderAdminStyles(); ?>
+        <?php echo renderAdminHeader(); ?>
+        
         <div class="header">
             <h1>🚀 GGTips - Админ панель</h1>
             <p>Управление базой данных и пользователями</p>
-            <div style="margin-top: 15px;">
-                <span style="opacity: 0.8;">👤 <?php echo htmlspecialchars($_SESSION['admin_username'] ?? 'Admin'); ?></span>
-                <span style="margin: 0 15px; opacity: 0.6;">|</span>
-                <span style="opacity: 0.8;">🌐 <?php echo htmlspecialchars($client_ip); ?></span>
-                <span style="margin: 0 15px; opacity: 0.6;">|</span>
-                <a href="admin_logout.php" style="color: #ff6b6b; text-decoration: none; padding: 8px 15px; border: 1px solid #ff6b6b; border-radius: 20px; transition: all 0.3s ease;">🚪 Выйти</a>
-            </div>
         </div>
         
         <?php if (isset($error)): ?>

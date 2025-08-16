@@ -1,21 +1,9 @@
 <?php
-session_start();
+require_once 'admin_auth.php';
 require_once 'backend/config.php';
 
-// Проверка авторизации
-if (!isset($_SESSION['admin_logged_in']) || !$_SESSION['admin_logged_in']) {
-    header('Location: admin_login.php');
-    exit;
-}
-
-// Проверка IP адреса
-$allowed_ips = ['157.230.244.205', '127.0.0.1', '::1'];
-$client_ip = $_SERVER['REMOTE_ADDR'] ?? '';
-if (!in_array($client_ip, $allowed_ips)) {
-    session_destroy();
-    header('Location: admin_login.php');
-    exit;
-}
+// Проверяем авторизацию администратора
+checkAdminAuth();
 
 $pdo = getDBConnection();
 if (!$pdo) {
@@ -321,6 +309,9 @@ $stats = $stats_stmt->fetch();
 </head>
 <body>
     <div class="container">
+        <?php echo renderAdminStyles(); ?>
+        <?php echo renderAdminHeader(); ?>
+        
         <div class="header">
             <h1>💰 Управление транзакциями</h1>
             <a href="admin_panel.php" class="back-btn">← Назад к панели</a>
