@@ -454,7 +454,7 @@ $stats = $stats_stmt->fetch();
                 <?php for ($i = max(1, $page - 2); $i <= min($total_pages, $page + 2); $i++): ?>
                     <a href="?page=<?php echo $i; ?>&type=<?php echo urlencode($type_filter); ?>&status=<?php echo urlencode($status_filter); ?>&search=<?php echo urlencode($search); ?>" 
                        class="page-btn <?php echo $i == $page ? 'active' : ''; ?>"><?php echo $i; ?></a>
-                <?php endforeach; ?>
+                <?php endfor; ?>
                 
                 <?php if ($page < $total_pages): ?>
                     <a href="?page=<?php echo $page + 1; ?>&type=<?php echo urlencode($type_filter); ?>&status=<?php echo urlencode($status_filter); ?>&search=<?php echo urlencode($search); ?>" class="page-btn">Следующая →</a>
