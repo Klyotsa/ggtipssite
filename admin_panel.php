@@ -206,15 +206,15 @@ try {
         
         <div class="stats-grid">
             <div class="stat-card">
-                <h3><?php echo $stats['users'] ?? 0; ?></h3>
+                <h3 data-stat="total_users"><?php echo $stats['users'] ?? 0; ?></h3>
                 <p>Пользователей</p>
             </div>
             <div class="stat-card">
-                <h3><?php echo $stats['transactions'] ?? 0; ?></h3>
+                <h3 data-stat="total_transactions"><?php echo $stats['transactions'] ?? 0; ?></h3>
                 <p>Транзакций</p>
             </div>
             <div class="stat-card">
-                <h3>$<?php echo number_format($stats['total_balance'] ?? 0, 2); ?></h3>
+                <h3 data-stat="total_balance">$<?php echo number_format($stats['total_balance'] ?? 0, 2); ?></h3>
                 <p>Общий баланс</p>
             </div>
         </div>
@@ -265,5 +265,8 @@ try {
             <?php endif; ?>
         </div>
     </div>
+    
+    <!-- Подключаем скрипт для автоматического обновления -->
+    <script src="admin_realtime.js"></script>
 </body>
 </html>

@@ -468,5 +468,8 @@ $stats = $stats_stmt->fetch();
             </div>
         <?php endif; ?>
     </div>
+    
+    <!-- Подключаем скрипт для автоматического обновления -->
+    <script src="admin_realtime.js"></script>
 </body>
 </html>
