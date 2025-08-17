@@ -11,6 +11,21 @@
     <link rel="manifest" href="/site.webmanifest" />
     <meta name="theme-color" content="#1a0f2e" />
     <title>GGTips - Профессиональный бустинг в играх</title>
+    
+    <!-- Google Analytics -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-XXXXXXXXXX', {
+        page_title: document.title,
+        page_location: window.location.href,
+        send_page_view: true,
+        anonymize_ip: true,
+        cookie_flags: 'SameSite=None;Secure'
+      });
+    </script>
   
     <!-- Preload critical assets -->
     <link rel="preload" href="/optimized/logo_brand.png" as="image">
