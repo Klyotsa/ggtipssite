@@ -29,19 +29,19 @@
 4. Введите **URL сайта**: `https://ganggametips.com`
 5. Введите **Название потока**: "GGTips Main Website"
 6. Нажмите **"Создать поток"**
-7. Скопируйте **ID измерения** (формат: `G-XXXXXXXXXX`)
+7. Скопируйте **ID измерения** (формат: `G-4J6E8K4883`)
 
 ### **Шаг 3: Обновление файлов**
 
 #### **Обновите `public/index.html`:**
 ```html
-<!-- Замените G-XXXXXXXXXX на ваш ID -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-XXXXXXXXXX"></script>
+<!-- Ваш ID: G-4J6E8K4883 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-4J6E8K4883"></script>
 <script>
   window.dataLayer = window.dataLayer || [];
   function gtag(){dataLayer.push(arguments);}
   gtag('js', new Date());
-  gtag('config', 'G-XXXXXXXXXX', {
+  gtag('config', 'G-4J6E8K4883', {
     page_title: document.title,
     page_location: window.location.href,
     send_page_view: true,
@@ -53,12 +53,12 @@
 
 #### **Обновите `src/utils/analytics.ts`:**
 ```typescript
-export const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // Ваш ID
+export const GA_MEASUREMENT_ID = 'G-4J6E8K4883'; // Ваш ID
 ```
 
 #### **Обновите `google-analytics.js`:**
 ```javascript
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // Ваш ID
+const GA_MEASUREMENT_ID = 'G-4J6E8K4883'; // Ваш ID
 ```
 
 ### **Шаг 4: Настройка целей (Goals)**
@@ -218,7 +218,7 @@ trackTimeOnPage('GTA5 Page', 300000); // 5 минут
 ### **Проверка установки:**
 1. Откройте сайт в браузере
 2. Откройте DevTools → Console
-3. Должно появиться: "Google Analytics initialized with ID: G-XXXXXXXXXX"
+3. Должно появиться: "Google Analytics initialized with ID: G-4J6E8K4883"
 
 ### **Проверка событий:**
 1. Выполните действия на сайте (клики, скролл)

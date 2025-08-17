@@ -1,7 +1,7 @@
 // Google Analytics 4 (GA4) Configuration
 // Замените GA_MEASUREMENT_ID на ваш реальный ID измерения
 
-const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // Замените на ваш ID
+const GA_MEASUREMENT_ID = 'G-4J6E8K4883'; // Ваш ID
 
 // Инициализация Google Analytics
 function initializeGoogleAnalytics() {

@@ -8,7 +8,7 @@ declare global {
 }
 
 // Конфигурация Google Analytics
-export const GA_MEASUREMENT_ID = 'G-XXXXXXXXXX'; // Замените на ваш ID
+export const GA_MEASUREMENT_ID = 'G-4J6E8K4883'; // Ваш ID
 
 // Инициализация GA
 export const initGA = () => {
