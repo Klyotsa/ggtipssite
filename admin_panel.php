@@ -243,6 +243,12 @@ try {
                 <p>Прямой доступ к базе данных, SQL запросы, экспорт данных</p>
                 <a href="admin_database.php" class="btn">Открыть</a>
             </div>
+            
+            <div class="nav-card" onclick="window.location.href='admin_change_password.php'">
+                <h3>🔐 Изменить пароль</h3>
+                <p>Изменить пароль администратора для повышения безопасности</p>
+                <a href="admin_change_password.php" class="btn">Открыть</a>
+            </div>
         </div>
         
         <div class="recent-users">
