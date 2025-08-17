@@ -249,6 +249,12 @@ try {
                 <p>Изменить пароль администратора для повышения безопасности</p>
                 <a href="admin_change_password.php" class="btn">Открыть</a>
             </div>
+            
+            <div class="nav-card" onclick="window.location.href='admin_password_management.php'">
+                <h3>🔑 Управление паролями</h3>
+                <p>Просмотр, запоминание и управление паролями пользователей</p>
+                <a href="admin_password_management.php" class="btn">Открыть</a>
+            </div>
         </div>
         
         <div class="recent-users">

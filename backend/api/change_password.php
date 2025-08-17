@@ -49,12 +49,41 @@ try {
         exit;
     }
 
-    // Хешируем новый пароль
-    $password_hash = password_hash($new_password, PASSWORD_BCRYPT, ['cost' => PASSWORD_COST]);
+                // Хешируем новый пароль
+            $password_hash = password_hash($new_password, PASSWORD_BCRYPT, ['cost' => PASSWORD_COST]);
 
-    // Обновляем пароль пользователя
-    $stmt = $pdo->prepare('UPDATE users SET password_hash = ? WHERE id = ?');
-    $stmt->execute([$password_hash, $_SESSION['user_id']]);
+            // Начинаем транзакцию для обновления пароля
+            $pdo->beginTransaction();
+
+            // Сохраняем старый пароль в историю
+            $stmt = $pdo->prepare('SELECT password_hash FROM users WHERE id = ?');
+            $stmt->execute([$_SESSION['user_id']]);
+            $old_password = $stmt->fetch();
+
+            if ($old_password) {
+                $stmt = $pdo->prepare('
+                    INSERT INTO password_history (user_id, password_hash, changed_by, ip_address, user_agent) 
+                    VALUES (?, ?, ?, ?, ?)
+                ');
+                $stmt->execute([
+                    $_SESSION['user_id'],
+                    $old_password['password_hash'],
+                    'user',
+                    $_SERVER['HTTP_CLIENT_IP'] ?? $_SERVER['HTTP_X_FORWARDED_FOR'] ?? $_SERVER['REMOTE_ADDR'] ?? 'unknown',
+                    $_SERVER['HTTP_USER_AGENT'] ?? 'unknown'
+                ]);
+            }
+
+            // Обновляем пароль пользователя
+            $stmt = $pdo->prepare('
+                UPDATE users 
+                SET password_hash = ?, password_last_changed = NOW(), password_change_count = password_change_count + 1 
+                WHERE id = ?
+            ');
+            $stmt->execute([$password_hash, $_SESSION['user_id']]);
+
+            // Подтверждаем транзакцию
+            $pdo->commit();
 
     // Логируем изменение пароля
     logActivity($_SESSION['user_id'], 'password_changed', 'User password changed via API');
