@@ -1,16 +1,9 @@
 <?php
-session_start();
 require_once 'backend/config.php';
-
-// Проверяем аутентификацию администратора
-if (!isset($_SESSION['admin_logged_in']) || $_SESSION['admin_logged_in'] !== true) {
-    header('Location: admin_login.php');
-    exit;
-}
 
 // Проверяем, что передан ID пользователя
 if (!isset($_GET['id']) || !is_numeric($_GET['id'])) {
-    header('Location: admin_users.php?error=invalid_id');
+    echo "Error: Invalid ID";
     exit;
 }
 
@@ -18,7 +11,7 @@ $user_id = (int)$_GET['id'];
 
 // Проверяем, что пользователь не админ
 if ($user_id === 1) { // ID админа
-    header('Location: admin_users.php?error=cannot_delete_admin');
+    echo "Error: Cannot delete admin";
     exit;
 }
 
@@ -28,37 +21,51 @@ try {
         throw new Exception('Database connection failed');
     }
 
+    // Проверяем, существует ли пользователь
+    $stmt = $pdo->prepare('SELECT username FROM users WHERE id = ?');
+    $stmt->execute([$user_id]);
+    $user = $stmt->fetch();
+    
+    if (!$user) {
+        echo "Error: User not found";
+        exit;
+    }
+
+    echo "Found user: " . $user['username'] . "<br>";
+
     // Начинаем транзакцию
     $pdo->beginTransaction();
 
     // Удаляем связанные записи
     $stmt = $pdo->prepare('DELETE FROM user_activity_log WHERE user_id = ?');
     $stmt->execute([$user_id]);
+    echo "Deleted from user_activity_log<br>";
 
     $stmt = $pdo->prepare('DELETE FROM user_sessions WHERE user_id = ?');
     $stmt->execute([$user_id]);
+    echo "Deleted from user_sessions<br>";
 
     $stmt = $pdo->prepare('DELETE FROM verification_codes WHERE user_id = ?');
     $stmt->execute([$user_id]);
+    echo "Deleted from verification_codes<br>";
 
     $stmt = $pdo->prepare('DELETE FROM transactions WHERE user_id = ?');
     $stmt->execute([$user_id]);
+    echo "Deleted from transactions<br>";
 
     $stmt = $pdo->prepare('DELETE FROM user_profiles WHERE user_id = ?');
     $stmt->execute([$user_id]);
+    echo "Deleted from user_profiles<br>";
 
     // Удаляем самого пользователя
     $stmt = $pdo->prepare('DELETE FROM users WHERE id = ?');
     $stmt->execute([$user_id]);
+    echo "Deleted from users<br>";
 
     // Подтверждаем транзакцию
     $pdo->commit();
 
-    // Логируем удаление
-    logActivity(1, 'admin_action', "Admin deleted user ID: $user_id");
-
-    header('Location: admin_users.php?success=user_deleted');
-    exit;
+    echo "SUCCESS: User deleted successfully!";
 
 } catch (Exception $e) {
     // Откатываем транзакцию в случае ошибки
@@ -66,8 +73,6 @@ try {
         $pdo->rollBack();
     }
     
-    error_log('User deletion error: ' . $e->getMessage());
-    header('Location: admin_users.php?error=deletion_failed');
-    exit;
+    echo "ERROR: " . $e->getMessage();
 }
 ?>
