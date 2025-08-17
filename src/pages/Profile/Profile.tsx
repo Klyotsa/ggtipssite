@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
 import { UserCircle } from '@styled-icons/boxicons-regular';
 import { Camera, Wallet, LogOut, UserDetail, LockAlt, ShoppingBag as ShoppingBagIcon, CreditCardAlt } from '@styled-icons/boxicons-solid';
+import ChangePassword from '../../components/ChangePassword';
 
 const ProfileContainer = styled.div`
   max-width: 1200px;
@@ -491,16 +492,12 @@ const Profile: React.FC = () => {
   const [isEditing, setIsEditing] = useState(false);
   const [editedName, setEditedName] = useState(user?.username || '');
   const [editedEmail, setEditedEmail] = useState(user?.email || '');
-  const [currentPassword, setCurrentPassword] = useState('');
-  const [newPassword, setNewPassword] = useState('');
-  const [confirmNewPassword, setConfirmNewPassword] = useState('');
-  const [passwordMessage, setPasswordMessage] = useState('');
-  const [passwordSuccess, setPasswordSuccess] = useState('');
   const [activeTab, setActiveTab] = useState('info');
   const [selectedOrder, setSelectedOrder] = useState<any | null>(null);
   const [chatInput, setChatInput] = useState('');
   const [orderChats, setOrderChats] = useState<{[orderId: string]: {author: string, text: string, time: string}[]}>({});
   const [selectedTopup, setSelectedTopup] = useState<any | null>(null);
+  const [showChangePassword, setShowChangePassword] = useState(false);
 
   // Функция для обновления профиля с сервера
   const fetchProfile = async () => {
@@ -551,29 +548,8 @@ const Profile: React.FC = () => {
     alert('Profile saved successfully!');
   };
 
-  const handlePasswordChange = (e: React.FormEvent) => {
-    e.preventDefault();
-    setPasswordMessage('');
-    setPasswordSuccess('');
-    if (!currentPassword || !newPassword || !confirmNewPassword) {
-      setPasswordMessage('Please fill in all fields.');
-      return;
-    }
-    if (newPassword !== confirmNewPassword) {
-      setPasswordMessage('New passwords do not match.');
-      return;
-    }
-    if (newPassword.length < 6) {
-      setPasswordMessage('Password must be at least 6 characters.');
-      return;
-    }
-    console.log('Changing password (mock):', { currentPassword, newPassword });
-    setTimeout(() => {
-      setPasswordSuccess('Password changed successfully!');
-      setCurrentPassword('');
-      setNewPassword('');
-      setConfirmNewPassword('');
-    }, 800);
+  const handlePasswordChange = () => {
+    setShowChangePassword(true);
   };
 
   if (!user) {
@@ -841,50 +817,21 @@ const Profile: React.FC = () => {
 
         {activeTab === 'password' && (
           <>
-            <PasswordSectionContainer>
-            <SectionTitle>
+            <Section>
+              <SectionTitle>
                 <LockAlt />
-              Change Password
-            </SectionTitle>
-            <form onSubmit={handlePasswordChange} autoComplete="off">
-              {passwordMessage && <PasswordMessage>{passwordMessage}</PasswordMessage>}
-              {passwordSuccess && <PasswordSuccess>{passwordSuccess}</PasswordSuccess>}
-                <InputGroup>
-                  <InfoLabel htmlFor="current-password">Current Password</InfoLabel>
-                  <StyledInput
-                    id="current-password"
-                type="password"
-                    placeholder="Enter current password"
-                value={currentPassword}
-                onChange={e => setCurrentPassword(e.target.value)}
-                autoComplete="current-password"
-              />
-                </InputGroup>
-                <InputGroup>
-                  <InfoLabel htmlFor="new-password">New Password</InfoLabel>
-                  <StyledInput
-                    id="new-password"
-                type="password"
-                    placeholder="Enter new password (min. 6 characters)"
-                value={newPassword}
-                onChange={e => setNewPassword(e.target.value)}
-                autoComplete="new-password"
-              />
-                </InputGroup>
-                <InputGroup>
-                  <InfoLabel htmlFor="confirm-new-password">Confirm New Password</InfoLabel>
-                  <StyledInput
-                    id="confirm-new-password"
-                type="password"
-                placeholder="Confirm new password"
-                value={confirmNewPassword}
-                onChange={e => setConfirmNewPassword(e.target.value)}
-                autoComplete="new-password"
-              />
-                </InputGroup>
-              <Button type="submit">Change Password</Button>
-            </form>
-            </PasswordSectionContainer>
+                Change Password
+              </SectionTitle>
+              <div style={{ textAlign: 'center', padding: '2rem' }}>
+                <p style={{ color: '#ccc', marginBottom: '2rem', fontSize: '1.1rem' }}>
+                  Click the button below to securely change your password
+                </p>
+                <Button onClick={handlePasswordChange} style={{ maxWidth: '300px', margin: '0 auto' }}>
+                  <LockAlt />
+                  Change Password
+                </Button>
+              </div>
+            </Section>
           </>
         )}
       </ProfileContentArea>
@@ -972,6 +919,11 @@ const Profile: React.FC = () => {
             </ModalRight>
           </OrderModalContent>
         </OrderModalOverlay>
+      )}
+
+      {/* Модальное окно изменения пароля */}
+      {showChangePassword && (
+        <ChangePassword onClose={() => setShowChangePassword(false)} />
       )}
     </ProfileContainer>
   );
