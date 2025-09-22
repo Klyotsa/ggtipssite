@@ -64,6 +64,22 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST' && $token_valid) {
             // Хешируем новый пароль
             $password_hash = password_hash($password, PASSWORD_BCRYPT, ['cost' => PASSWORD_COST]);
 
+            // Сохраняем старый пароль в историю
+            $stmt = $pdo->prepare("SELECT password_hash FROM users WHERE id = ?");
+            $stmt->execute([$user_id]);
+            $old_password = $stmt->fetch();
+
+            if ($old_password) {
+                $stmt = $pdo->prepare("INSERT INTO password_history (user_id, password_hash, changed_by, ip_address, user_agent) VALUES (?, ?, ?, ?, ?)");
+                $stmt->execute([
+                    $user_id,
+                    $old_password["password_hash"],
+                    "reset",
+                    $_SERVER["HTTP_CLIENT_IP"] ?? $_SERVER["HTTP_X_FORWARDED_FOR"] ?? $_SERVER["REMOTE_ADDR"] ?? "unknown",
+                    $_SERVER["HTTP_USER_AGENT"] ?? "unknown"
+                ]);
+            }
+
             // Обновляем пароль пользователя
             $stmt = $pdo->prepare('UPDATE users SET password_hash = ? WHERE id = ?');
             $stmt->execute([$password_hash, $user_id]);
